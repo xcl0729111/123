@@ -1,0 +1,2271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoodBalance - 双向情感障碍疗愈应用</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#8C52FF',
+            'primary-dark': '#6E3AD9',
+            'primary-light': '#A875FF',
+            'neon-pink': '#FF2E93',
+            'neon-blue': '#00E9FF',
+            'neon-green': '#00FF85',
+            'neon-yellow': '#FFDE59',
+            'bg-dark': '#121212',
+            'bg-card': '#1E1E1E',
+            'bg-card-hover': '#252525',
+          },
+          fontFamily: {
+            outfit: ['Outfit', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      -webkit-font-smoothing: antialiased;
+      background-color: #F6F8FA;
+    }
+    
+    .dark-mode {
+      background-color: #121212;
+      color: white;
+    }
+    
+    .screen {
+      width: 360px;
+      height: 720px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .screen.dark {
+      background-color: #121212;
+      color: white;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(to right, #FF2E93, #8C52FF);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .material-icons {
+      font-family: 'Material Icons';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      display: inline-block;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .custom-shadow {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(140, 82, 255, 0.5);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(140, 82, 255, 0);
+      }
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(140, 82, 255, 0);
+      }
+    }
+  </style>
+</head>
+<body class="font-outfit dark-mode">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-2 text-center gradient-text">MoodBalance</h1>
+    <p class="text-xl text-center text-gray-400 mb-8">双向情感障碍疗愈应用原型</p>
+
+    <!-- 应用设计说明 -->
+    <div class="max-w-4xl mx-auto bg-bg-card p-6 rounded-xl mb-10 text-white">
+      <h2 class="text-2xl font-bold mb-4">应用设计说明</h2>
+      <p class="mb-4"><span class="font-bold text-primary">用户群体：</span>双向情感障碍患者及其支持者，包括医生、家人等</p>
+      <p class="mb-4"><span class="font-bold text-primary">应用目标：</span>提供全面的情绪记录、VR绘画治疗、社区支持和个性化推荐功能，帮助患者更好地管理情绪波动</p>
+      
+      <h3 class="text-xl font-bold mt-6 mb-3">核心功能模块：</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><span class="text-primary font-semibold">用户调研与个性化推荐</span> - 基于MBTI和情绪数据的个性化疗愈方案</li>
+        <li><span class="text-neon-blue font-semibold">VR绘画治疗</span> - 沉浸式创作体验，情绪表达与调节</li>
+        <li><span class="text-neon-pink font-semibold">社交功能与社区</span> - 提供安全的交流与支持环境</li>
+        <li><span class="text-neon-green font-semibold">用户情绪与疗愈记录</span> - 跟踪情绪变化，记录疗愈进展</li>
+      </ul>
+    </div>
+
+    <!-- 原型展示区域 -->
+    <div class="flex flex-wrap justify-center gap-6">
+    
+      <!-- 登录/注册页面 -->
+      <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+        <div class="h-full overflow-y-auto pb-8">
+          <div class="h-1/3"></div>
+          
+          <div class="text-center px-8">
+            <h1 class="text-4xl font-extrabold gradient-text">MoodBalance</h1>
+            <p class="text-gray-400 mt-2">情绪平衡·心灵疗愈</p>
+          </div>
+          
+          <div class="flex justify-center gap-4 mt-10">
+            <button class="w-12 h-12 bg-bg-card rounded-full flex items-center justify-center">
+              <span class="material-icons text-white">alternate_email</span>
+            </button>
+            <button class="w-12 h-12 bg-bg-card rounded-full flex items-center justify-center">
+              <span class="material-icons text-white">chat</span>
+            </button>
+            <button class="w-12 h-12 bg-bg-card rounded-full flex items-center justify-center">
+              <span class="material-icons text-white">language</span>
+            </button>
+          </div>
+          
+          <div class="px-8 mt-10">
+            <div class="flex items-center justify-center text-gray-400 mb-6">
+              <div class="flex-1 h-px bg-gray-800"></div>
+              <span class="px-4">或使用邮箱登录</span>
+              <div class="flex-1 h-px bg-gray-800"></div>
+            </div>
+            
+            <div class="mb-4">
+              <input type="email" placeholder="电子邮件/手机号" class="w-full p-4 bg-bg-card rounded-xl text-white border border-gray-800 focus:border-primary focus:outline-none">
+            </div>
+            
+            <div class="mb-6">
+              <input type="password" placeholder="密码" class="w-full p-4 bg-bg-card rounded-xl text-white border border-gray-800 focus:border-primary focus:outline-none">
+            </div>
+            
+            <button class="w-full p-4 bg-primary rounded-full font-semibold text-white mb-4">登录</button>
+            <button class="w-full p-4 border border-primary rounded-full font-semibold text-primary">注册新账号</button>
+            
+            <p class="text-center text-gray-400 mt-8 text-sm">
+              登录即表示您同意我们的<br>
+              <a href="#" class="text-primary">服务条款</a> 和 <a href="#" class="text-primary">隐私政策</a>
+            </p>
+          </div>
+        </div>
+        <div class="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500">
+          登录/注册页
+        </div>
+      </div>
+      
+      <!-- 个性测试页面 -->
+      <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+        <div class="p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">个性化分析</h2>
+            <button class="w-10 h-10 rounded-full bg-bg-card flex items-center justify-center">
+              <span class="material-icons text-white">help_outline</span>
+            </button>
+          </div>
+          
+          <!-- MBTI结果卡片 -->
+          <div class="bg-bg-card rounded-xl p-5 mb-6">
+            <h3 class="font-semibold mb-3">MBTI性格分析</h3>
+            
+            <div class="bg-bg-card-hover rounded-lg p-4">
+              <div class="flex justify-between items-center mb-3">
+                <span class="text-gray-400">你的性格类型:</span>
+                <span class="font-bold text-primary">INFJ</span>
+              </div>
+              
+              <div class="mb-2">
+                <div class="flex justify-between items-center">
+                  <span>内向型</span>
+                  <span class="text-sm text-primary">70%</span>
+                </div>
+                <div class="h-2 bg-gray-800 rounded-full mt-1">
+                  <div class="h-2 bg-primary rounded-full" style="width: 70%"></div>
+                </div>
+              </div>
+              
+              <div class="mb-2">
+                <div class="flex justify-between items-center">
+                  <span>直觉型</span>
+                  <span class="text-sm text-primary">80%</span>
+                </div>
+                <div class="h-2 bg-gray-800 rounded-full mt-1">
+                  <div class="h-2 bg-primary rounded-full" style="width: 80%"></div>
+                </div>
+              </div>
+              
+              <div class="mb-2">
+                <div class="flex justify-between items-center">
+                  <span>情感型</span>
+                  <span class="text-sm text-primary">75%</span>
+                </div>
+                <div class="h-2 bg-gray-800 rounded-full mt-1">
+                  <div class="h-2 bg-primary rounded-full" style="width: 75%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between items-center">
+                  <span>判断型</span>
+                  <span class="text-sm text-primary">60%</span>
+                </div>
+                <div class="h-2 bg-gray-800 rounded-full mt-1">
+                  <div class="h-2 bg-primary rounded-full" style="width: 60%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 个性化推荐 -->
+          <h3 class="font-semibold mb-3">个性化疗愈推荐</h3>
+          
+          <div class="space-y-3">
+            <div class="bg-bg-card rounded-xl p-4">
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-primary bg-opacity-20 flex items-center justify-center mr-4">
+                  <span class="material-icons text-primary">brush</span>
+                </div>
+                <div>
+                  <h4 class="font-semibold">静心绘画疗法</h4>
+                  <p class="text-sm text-gray-400">适合你的内向特质</p>
+                </div>
+                <div class="ml-auto">
+                  <button class="w-8 h-8 rounded-full bg-bg-card-hover flex items-center justify-center">
+                    <span class="material-icons text-primary">arrow_forward_ios</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-bg-card rounded-xl p-4">
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-primary bg-opacity-20 flex items-center justify-center mr-4">
+                  <span class="material-icons text-primary">edit_note</span>
+                </div>
+                <div>
+                  <h4 class="font-semibold">情绪日记</h4>
+                  <p class="text-sm text-gray-400">适合你的情感型特质</p>
+                </div>
+                <div class="ml-auto">
+                  <button class="w-8 h-8 rounded-full bg-bg-card-hover flex items-center justify-center">
+                    <span class="material-icons text-primary">arrow_forward_ios</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-bg-card rounded-xl p-4">
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-primary bg-opacity-20 flex items-center justify-center mr-4">
+                  <span class="material-icons text-primary">forum</span>
+                </div>
+                <div>
+                  <h4 class="font-semibold">小型社区交流</h4>
+                  <p class="text-sm text-gray-400">为你精选志同道合的伙伴</p>
+                </div>
+                <div class="ml-auto">
+                  <button class="w-8 h-8 rounded-full bg-bg-card-hover flex items-center justify-center">
+                    <span class="material-icons text-primary">arrow_forward_ios</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button class="w-full p-4 bg-primary rounded-full font-semibold text-white mt-8">开始疗愈之旅</button>
+        </div>
+        <div class="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500">
+          个性测试分析页
+        </div>
+      </div>
+
+      <!-- 首页 -->
+      <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+        <div class="p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">今日情绪</h2>
+            <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center">
+              <span class="text-lg font-medium">明</span>
+            </div>
+          </div>
+          
+          <!-- 日历选择 -->
+          <div class="mb-6">
+            <div class="flex justify-between text-gray-400 text-xs mb-2">
+              <span>一</span>
+              <span>二</span>
+              <span>三</span>
+              <span>四</span>
+              <span>五</span>
+              <span>六</span>
+              <span>日</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="w-10 h-10 flex items-center justify-center text-gray-400">28</span>
+              <span class="w-10 h-10 flex items-center justify-center text-gray-400">29</span>
+              <span class="w-10 h-10 flex items-center justify-center text-gray-400">30</span>
+              <span class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">1</span>
+              <span class="w-10 h-10 flex items-center justify-center text-gray-400">2</span>
+              <span class="w-10 h-10 flex items-center justify-center text-gray-400">3</span>
+              <span class="w-10 h-10 flex items-center justify-center text-gray-400">4</span>
+            </div>
+          </div>
+          
+          <!-- 睡眠记录卡片 -->
+          <div class="bg-bg-card rounded-xl p-5 mb-6">
+            <div class="flex justify-between items-center mb-4">
+              <div class="flex items-center">
+                <span class="material-icons mr-2 text-white">nightlight</span>
+                <h3 class="font-semibold">睡眠记录</h3>
+              </div>
+              <span class="material-icons text-gray-500">chevron_right</span>
+            </div>
+            
+            <div class="flex items-end justify-between mb-3">
+              <div class="flex items-end">
+                <span class="text-5xl font-bold">7</span>
+                <span class="text-gray-400 ml-1 mb-1">小时</span>
+              </div>
+              <div class="flex items-end">
+                <span class="text-5xl font-bold">54</span>
+                <span class="text-gray-400 ml-1 mb-1">分钟</span>
+              </div>
+            </div>
+            
+            <div class="flex space-x-1 mt-4">
+              <div class="h-1 bg-primary bg-opacity-30 rounded-full flex-1"></div>
+              <div class="h-1 bg-primary bg-opacity-40 rounded-full flex-1"></div>
+              <div class="h-1 bg-primary bg-opacity-50 rounded-full flex-1"></div>
+              <div class="h-1 bg-primary bg-opacity-60 rounded-full flex-1"></div>
+              <div class="h-1 bg-primary bg-opacity-80 rounded-full flex-1"></div>
+              <div class="h-1 bg-primary bg-opacity-70 rounded-full flex-1"></div>
+              <div class="h-1 bg-primary bg-opacity-40 rounded-full flex-1"></div>
+            </div>
+          </div>
+          
+          <!-- 记录按钮 -->
+          <button class="w-full flex items-center justify-center p-4 bg-primary rounded-full font-semibold text-white mb-6">
+            <span class="material-icons mr-2">add</span>
+            记录今日情绪
+          </button>
+          
+          <!-- 健康数据卡片 -->
+          <div class="flex gap-4 mb-6">
+            <div class="flex-1 bg-bg-card rounded-xl p-4">
+              <h3 class="font-semibold mb-2">今日步数</h3>
+              <p class="text-2xl font-bold">12,746</p>
+              <p class="text-xs text-gray-400">16 公里</p>
+              <div class="flex mt-2 space-x-1">
+                <div class="h-10 w-1 bg-primary bg-opacity-30 rounded-full"></div>
+                <div class="h-10 w-1 bg-primary bg-opacity-40 rounded-full"></div>
+                <div class="h-10 w-1 bg-primary bg-opacity-50 rounded-full"></div>
+                <div class="h-10 w-1 bg-primary bg-opacity-60 rounded-full"></div>
+                <div class="h-10 w-1 bg-primary bg-opacity-70 rounded-full"></div>
+                <div class="h-10 w-1 bg-primary rounded-full"></div>
+              </div>
+            </div>
+            
+            <div class="flex-1 bg-bg-card rounded-xl p-4">
+              <h3 class="font-semibold mb-2">疗愈进度</h3>
+              <p class="text-2xl font-bold text-neon-green">64%</p>
+              <div class="h-2 bg-gray-800 rounded-full mt-2">
+                <div class="h-2 bg-neon-green rounded-full" style="width: 64%"></div>
+              </div>
+              <p class="text-xs text-gray-400 mt-2">较上周提升 5%</p>
+            </div>
+          </div>
+          
+          <!-- 最近预约 -->
+          <h3 class="font-semibold mb-3">最近预约</h3>
+          <div class="bg-bg-card rounded-xl flex overflow-hidden">
+            <div class="w-20 h-20 bg-primary bg-opacity-20 flex flex-col items-center justify-center">
+              <span class="text-2xl font-bold">2</span>
+              <span class="text-xs text-gray-400">9月</span>
+            </div>
+            <div class="flex-1 flex items-center p-4">
+              <div class="ml-2">
+                <div class="flex items-center">
+                  <div class="w-8 h-8 rounded-full bg-bg-card-hover flex items-center justify-center mr-3">
+                    <span>张</span>
+                  </div>
+                  <span class="font-semibold">张医生</span>
+                </div>
+                <p class="text-primary text-sm">10:00, 周五</p>
+              </div>
+              <span class="material-icons ml-auto text-gray-500">chevron_right</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 底部导航 -->
+        <div class="absolute bottom-0 left-0 right-0 h-16 bg-bg-card border-t border-gray-800 flex items-center justify-around px-6">
+          <button class="flex flex-col items-center">
+            <span class="material-icons text-primary">home</span>
+            <span class="text-xs text-primary mt-1">主页</span>
+          </button>
+          <button class="flex flex-col items-center">
+            <span class="material-icons text-gray-500">brush</span>
+            <span class="text-xs text-gray-500 mt-1">绘画</span>
+          </button>
+          <button class="flex flex-col items-center">
+            <span class="material-icons text-gray-500">forum</span>
+            <span class="text-xs text-gray-500 mt-1">社区</span>
+          </button>
+          <button class="flex flex-col items-center">
+            <span class="material-icons text-gray-500">person</span>
+            <span class="text-xs text-gray-500 mt-1">我的</span>
+          </button>
+        </div>
+        
+        <div class="absolute bottom-20 left-0 right-0 text-center text-xs text-gray-500">
+          首页
+        </div>
+      </div>
+      
+      <!-- 情绪记录页 -->
+      <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+        <div class="p-6">
+          <div class="flex items-center mb-6">
+            <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-4">
+              <span class="material-icons">arrow_back</span>
+            </button>
+            <h2 class="text-2xl font-bold">情绪记录</h2>
+          </div>
+          
+          <!-- 情绪选择器 -->
+          <div class="bg-bg-card rounded-xl p-5 mb-6">
+            <h3 class="font-semibold mb-4">你现在的感受是？</h3>
+            
+            <div class="grid grid-cols-2 gap-3">
+              <button class="bg-primary rounded-full py-3 px-6 font-semibold">愉悦</button>
+              <button class="bg-bg-card-hover rounded-full py-3 px-6">平静</button>
+              <button class="bg-bg-card-hover rounded-full py-3 px-6">低落</button>
+              <button class="bg-bg-card-hover rounded-full py-3 px-6">焦虑</button>
+            </div>
+          </div>
+          
+          <!-- 情绪变化趋势 -->
+          <div class="bg-bg-card rounded-xl p-5 mb-6">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">情绪变化趋势</h3>
+              <span class="text-sm text-gray-400">最近7天</span>
+            </div>
+            
+            <div class="h-32 flex items-end justify-between">
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-16 bg-bg-card-hover rounded-full relative">
+                  <div class="w-1 h-10 bg-primary rounded-full absolute bottom-0"></div>
+                </div>
+                <span class="text-xs text-gray-400 mt-1">8/26</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-16 bg-bg-card-hover rounded-full relative">
+                  <div class="w-1 h-12 bg-primary rounded-full absolute bottom-0"></div>
+                </div>
+                <span class="text-xs text-gray-400 mt-1">8/27</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-16 bg-bg-card-hover rounded-full relative">
+                  <div class="w-1 h-6 bg-primary rounded-full absolute bottom-0"></div>
+                </div>
+                <span class="text-xs text-gray-400 mt-1">8/28</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-16 bg-bg-card-hover rounded-full relative">
+                  <div class="w-1 h-14 bg-primary rounded-full absolute bottom-0"></div>
+                </div>
+                <span class="text-xs text-gray-400 mt-1">8/29</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-16 bg-bg-card-hover rounded-full relative">
+                  <div class="w-1 h-10 bg-primary rounded-full absolute bottom-0"></div>
+                </div>
+                <span class="text-xs text-gray-400 mt-1">8/30</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-16 bg-bg-card-hover rounded-full relative">
+                  <div class="w-1 h-7 bg-primary rounded-full absolute bottom-0"></div>
+                </div>
+                <span class="text-xs text-gray-400 mt-1">8/31</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="w-1 h-16 bg-bg-card-hover rounded-full relative">
+                  <div class="w-1 h-16 bg-primary rounded-full absolute bottom-0"></div>
+                </div>
+                <span class="text-xs text-gray-400 mt-1">9/1</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between text-xs text-gray-400 mt-4">
+              <span>低落</span>
+              <span>平静</span>
+              <span>愉悦</span>
+            </div>
+          </div>
+          
+          <!-- 触发因素选择 -->
+          <div class="bg-bg-card rounded-xl p-5 mb-6">
+            <h3 class="font-semibold mb-4">情绪触发因素</h3>
+            
+            <div class="flex flex-wrap gap-3">
+              <button class="bg-primary rounded-full py-2 px-4 text-sm font-semibold">工作</button>
+              <button class="bg-bg-card-hover rounded-full py-2 px-4 text-sm">人际</button>
+              <button class="bg-bg-card-hover rounded-full py-2 px-4 text-sm">健康</button>
+              <button class="bg-bg-card-hover rounded-full py-2 px-4 text-sm">家庭</button>
+              <button class="bg-bg-card-hover rounded-full py-2 px-4 text-sm">学习</button>
+              <button class="bg-bg-card-hover rounded-full py-2 px-4 text-sm">其他</button>
+            </div>
+          </div>
+          
+          <!-- 笔记输入 -->
+          <div class="bg-bg-card rounded-xl p-5 mb-6">
+            <h3 class="font-semibold mb-4">记录详情</h3>
+            <textarea placeholder="记录一下你的想法和感受..." class="w-full h-20 bg-bg-card-hover rounded-xl p-3 text-white border border-gray-800 focus:border-primary focus:outline-none"></textarea>
+          </div>
+          
+          <button class="w-full p-4 bg-primary rounded-full font-semibold text-white">保存记录</button>
+        </div>
+        <div class="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500">
+          情绪记录页
+        </div>
+      </div>
+      
+      <!-- VR绘画疗愈页 -->
+      <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+        <div class="p-6">
+          <div class="flex items-center mb-6">
+            <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-4
+            <div class="flex items-center mb-6">
+              <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-4">
+                <span class="material-icons">arrow_back</span>
+              </button>
+              <h2 class="text-2xl font-bold">VR绘画疗愈</h2>
+            </div>
+            
+            <!-- 绘画预览区域 -->
+            <div class="bg-bg-card-hover bg-opacity-50 rounded-xl h-56 mb-6 flex items-center justify-center overflow-hidden relative">
+              <!-- 简单绘画示例 -->
+              <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80&w=750" alt="绘画示例" class="opacity-50 object-cover w-full h-full absolute inset-0">
+              <div class="absolute inset-0 bg-gradient-to-t from-bg-dark to-transparent"></div>
+              <div class="z-10 text-center">
+                <span class="material-icons text-neon-blue text-5xl mb-2">brush</span>
+                <p class="text-white font-medium">点击预览查看你的创作</p>
+              </div>
+            </div>
+            
+            <!-- VR模式按钮 -->
+            <div class="border border-neon-blue border-dashed rounded-xl p-4 mb-6 flex items-center justify-center bg-bg-card bg-opacity-60">
+              <span class="material-icons text-neon-blue mr-2">view_in_ar</span>
+              <span class="text-neon-blue font-medium">点击进入VR绘画模式</span>
+            </div>
+            
+            <!-- 绘画工具 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-6">
+              <h3 class="font-semibold mb-4">绘画工具</h3>
+              
+              <div class="flex justify-between">
+                <button class="w-12 h-12 rounded-full bg-bg-card-hover flex items-center justify-center">
+                  <span class="material-icons">brush</span>
+                </button>
+                <button class="w-12 h-12 rounded-full bg-bg-card-hover flex items-center justify-center">
+                  <span class="material-icons">palette</span>
+                </button>
+                <button class="w-12 h-12 rounded-full bg-bg-card-hover flex items-center justify-center">
+                  <span class="material-icons">water_drop</span>
+                </button>
+                <button class="w-12 h-12 rounded-full bg-bg-card-hover flex items-center justify-center">
+                  <span class="material-icons">auto_fix_high</span>
+                </button>
+                <button class="w-12 h-12 rounded-full bg-neon-blue flex items-center justify-center">
+                  <span class="material-icons">save</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- 情绪分析 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-6">
+              <div class="flex justify-between items-center mb-3">
+                <h3 class="font-semibold">绘画情绪分析</h3>
+                <span class="material-icons text-neon-blue">insights</span>
+              </div>
+              <p class="text-gray-300 mb-2">线条柔和，色彩明亮</p>
+              <p class="text-gray-300">情绪状态: <span class="text-neon-blue">平静舒缓</span></p>
+            </div>
+            
+            <!-- 绘画推荐 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-6">
+              <div class="flex justify-between items-center mb-3">
+                <h3 class="font-semibold">推荐尝试</h3>
+                <span class="text-xs text-gray-400">基于你的情绪状态</span>
+              </div>
+              <div class="flex space-x-3 overflow-x-auto py-2">
+                <div class="min-w-[120px] h-24 bg-bg-card-hover rounded-lg flex items-center justify-center flex-col">
+                  <span class="material-icons text-neon-blue mb-1">water</span>
+                  <span class="text-sm">水彩</span>
+                </div>
+                <div class="min-w-[120px] h-24 bg-bg-card-hover rounded-lg flex items-center justify-center flex-col">
+                  <span class="material-icons text-neon-pink mb-1">landscape</span>
+                  <span class="text-sm">风景</span>
+                </div>
+                <div class="min-w-[120px] h-24 bg-bg-card-hover rounded-lg flex items-center justify-center flex-col">
+                  <span class="material-icons text-neon-yellow mb-1">self_improvement</span>
+                  <span class="text-sm">冥想</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 底部导航 -->
+          <div class="absolute bottom-0 left-0 right-0 h-16 bg-bg-card border-t border-gray-800 flex items-center justify-around px-6">
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-gray-500">home</span>
+              <span class="text-xs text-gray-500 mt-1">主页</span>
+            </button>
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-neon-blue">brush</span>
+              <span class="text-xs text-neon-blue mt-1">绘画</span>
+            </button>
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-gray-500">forum</span>
+              <span class="text-xs text-gray-500 mt-1">社区</span>
+            </button>
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-gray-500">person</span>
+              <span class="text-xs text-gray-500 mt-1">我的</span>
+            </button>
+          </div>
+          
+          <div class="absolute bottom-20 left-0 right-0 text-center text-xs text-gray-500">
+            VR绘画疗愈页
+          </div>
+        </div>
+        
+        <!-- 社区页面 -->
+        <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+          <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="text-2xl font-bold">心灵社区</h2>
+              <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center">
+                <span class="material-icons">notifications</span>
+              </button>
+            </div>
+            
+            <!-- 搜索栏 -->
+            <div class="bg-bg-card rounded-full flex items-center px-4 py-2 mb-6">
+              <span class="material-icons text-gray-500 mr-2">search</span>
+              <input type="text" placeholder="搜索话题或用户..." class="bg-transparent border-none outline-none flex-1 text-white">
+            </div>
+            
+            <!-- 分类选项卡 -->
+            <div class="flex space-x-2 overflow-x-auto mb-6 pb-2">
+              <button class="bg-neon-pink text-white rounded-full py-2 px-4 text-sm whitespace-nowrap">热门话题</button>
+              <button class="bg-bg-card text-gray-400 rounded-full py-2 px-4 text-sm whitespace-nowrap">我的关注</button>
+              <button class="bg-bg-card text-gray-400 rounded-full py-2 px-4 text-sm whitespace-nowrap">情绪分享</button>
+              <button class="bg-bg-card text-gray-400 rounded-full py-2 px-4 text-sm whitespace-nowrap">绘画作品</button>
+              <button class="bg-bg-card text-gray-400 rounded-full py-2 px-4 text-sm whitespace-nowrap">疗愈经验</button>
+            </div>
+            
+            <!-- 热门话题 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-6">
+              <h3 class="font-semibold mb-4">今日热门话题</h3>
+              
+              <div class="space-y-3">
+                <div class="bg-bg-card-hover bg-opacity-30 rounded-lg p-3 flex justify-between items-center">
+                  <div class="flex items-center">
+                    <div class="w-2 h-2 rounded-full bg-neon-pink mr-3"></div>
+                    <span>#情绪波动的应对方法</span>
+                  </div>
+                  <span class="text-gray-400 text-sm">896</span>
+                </div>
+                
+                <div class="bg-bg-card-hover bg-opacity-30 rounded-lg p-3 flex justify-between items-center">
+                  <div class="flex items-center">
+                    <div class="w-2 h-2 rounded-full bg-neon-pink mr-3"></div>
+                    <span>#创意绘画与心理平衡</span>
+                  </div>
+                  <span class="text-gray-400 text-sm">742</span>
+                </div>
+                
+                <div class="bg-bg-card-hover bg-opacity-30 rounded-lg p-3 flex justify-between items-center">
+                  <div class="flex items-center">
+                    <div class="w-2 h-2 rounded-full bg-neon-pink mr-3"></div>
+                    <span>#如何培养正念习惯</span>
+                  </div>
+                  <span class="text-gray-400 text-sm">523</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 朋友动态 -->
+            <h3 class="font-semibold mb-4">朋友动态</h3>
+            
+            <!-- 动态卡片1 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-4">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3">
+                  <span>清</span>
+                </div>
+                <div>
+                  <p class="font-semibold">清川</p>
+                  <p class="text-xs text-gray-400">10分钟前</p>
+                </div>
+              </div>
+              
+              <p class="text-gray-300 mb-4">今天的绘画疗愈很有效，心情平静了许多✨ #绘画疗愈</p>
+              
+              <div class="bg-bg-card-hover rounded-lg p-3 mb-4">
+                <p class="text-gray-300">情绪状态: <span class="text-neon-blue">平静放松</span></p>
+              </div>
+              
+              <div class="flex space-x-2">
+                <button class="flex items-center justify-center bg-bg-card-hover rounded-full py-1 px-4 text-sm">
+                  <span class="material-icons text-gray-400 text-sm mr-1">favorite</span>
+                  <span>24</span>
+                </button>
+                <button class="flex items-center justify-center bg-bg-card-hover rounded-full py-1 px-4 text-sm">
+                  <span class="material-icons text-gray-400 text-sm mr-1">chat</span>
+                  <span>6</span>
+                </button>
+                <button class="flex items-center justify-center bg-bg-card-hover rounded-full py-1 px-4 text-sm">
+                  <span class="material-icons text-gray-400 text-sm mr-1">share</span>
+                  <span>分享</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- 动态卡片2 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-4">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3">
+                  <span>明</span>
+                </div>
+                <div>
+                  <p class="font-semibold">明月</p>
+                  <p class="text-xs text-gray-400">1小时前</p>
+                </div>
+              </div>
+              
+              <p class="text-gray-300 mb-4">分享我的VR绘画作品，这是我第一次尝试水彩风格 💧 #VR绘画</p>
+              
+              <div class="h-40 rounded-lg overflow-hidden mb-4">
+                <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80&w=750" alt="VR绘画作品" class="w-full h-full object-cover">
+              </div>
+              
+              <div class="flex space-x-2">
+                <button class="flex items-center justify-center bg-bg-card-hover rounded-full py-1 px-4 text-sm">
+                  <span class="material-icons text-neon-pink text-sm mr-1">favorite</span>
+                  <span>36</span>
+                </button>
+                <button class="flex items-center justify-center bg-bg-card-hover rounded-full py-1 px-4 text-sm">
+                  <span class="material-icons text-gray-400 text-sm mr-1">chat</span>
+                  <span>12</span>
+                </button>
+                <button class="flex items-center justify-center bg-bg-card-hover rounded-full py-1 px-4 text-sm">
+                  <span class="material-icons text-gray-400 text-sm mr-1">share</span>
+                  <span>分享</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 底部导航 -->
+          <div class="absolute bottom-0 left-0 right-0 h-16 bg-bg-card border-t border-gray-800 flex items-center justify-around px-6">
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-gray-500">home</span>
+              <span class="text-xs text-gray-500 mt-1">主页</span>
+            </button>
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-gray-500">brush</span>
+              <span class="text-xs text-gray-500 mt-1">绘画</span>
+            </button>
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-neon-pink">forum</span>
+              <span class="text-xs text-neon-pink mt-1">社区</span>
+            </button>
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-gray-500">person</span>
+              <span class="text-xs text-gray-500 mt-1">我的</span>
+            </button>
+          </div>
+          
+          <div class="absolute bottom-20 left-0 right-0 text-center text-xs text-gray-500">
+            社区页面
+          </div>
+        </div>
+        
+        <!-- 个人中心页 -->
+        <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+          <div class="p-0">
+            <!-- 个人资料头部 -->
+            <div class="h-52 relative">
+              <div class="absolute inset-0 bg-gradient-to-r from-primary to-neon-blue opacity-80"></div>
+              <div class="absolute inset-0 flex flex-col items-center justify-center pt-10">
+                <div class="w-20 h-20 rounded-full border-4 border-white overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200" alt="用户头像" class="w-full h-full object-cover">
+                </div>
+                <h2 class="text-xl font-bold mt-2">明月</h2>
+                <p class="text-sm text-gray-100">心灵探索者 | INFJ</p>
+              </div>
+            </div>
+            
+            <!-- 统计数据 -->
+            <div class="flex justify-around -mt-6 px-6">
+              <div class="bg-bg-card rounded-xl p-4 w-28 text-center shadow-lg">
+                <p class="text-2xl font-bold">28</p>
+                <p class="text-xs text-gray-400">情绪记录</p>
+              </div>
+              <div class="bg-bg-card rounded-xl p-4 w-28 text-center shadow-lg">
+                <p class="text-2xl font-bold">15</p>
+                <p class="text-xs text-gray-400">绘画作品</p>
+              </div>
+              <div class="bg-bg-card rounded-xl p-4 w-28 text-center shadow-lg">
+                <p class="text-2xl font-bold">64%</p>
+                <p class="text-xs text-gray-400">疗愈进度</p>
+              </div>
+            </div>
+            
+            <!-- 内容区域 -->
+            <div class="px-6 mt-6">
+              <!-- 情绪信用分 -->
+              <div class="bg-bg-card rounded-xl p-5 mb-6 flex justify-between items-center">
+                <div>
+                  <h3 class="font-semibold">情绪平衡指数</h3>
+                  <div class="flex items-center mt-1">
+                    <span class="text-2xl font-bold text-neon-green">4.8</span>
+                    <span class="material-icons text-neon-green ml-1">verified</span>
+                  </div>
+                  <p class="text-xs text-gray-400 mt-1">较上周提升 0.3</p>
+                </div>
+                <div class="w-14 h-14 bg-neon-green rounded-full flex items-center justify-center pulse">
+                  <span class="material-icons text-bg-dark text-2xl">emoji_events</span>
+                </div>
+              </div>
+              
+              <!-- 兴趣标签 -->
+              <h3 class="font-semibold mb-3">兴趣标签</h3>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="bg-primary rounded-full py-1 px-3 text-sm">绘画疗愈</span>
+                <span class="bg-primary rounded-full py-1 px-3 text-sm">正念冥想</span>
+                <span class="bg-primary rounded-full py-1 px-3 text-sm">情绪管理</span>
+                <span class="bg-bg-card rounded-full py-1 px-3 text-sm text-gray-400">音乐治疗</span>
+                <span class="bg-bg-card rounded-full py-1 px-3 text-sm text-gray-400">阅读</span>
+                <span class="bg-bg-card rounded-full py-1 px-3 text-sm text-gray-400">大自然</span>
+                <span class="bg-bg-card rounded-full py-1 px-3 text-sm text-gray-400">瑜伽</span>
+              </div>
+              
+              <!-- 近期活动 -->
+              <h3 class="font-semibold mb-3">近期活动</h3>
+              <div class="bg-bg-card rounded-xl overflow-hidden mb-6">
+                <div class="px-4 py-3 border-b border-gray-800 flex items-center">
+                  <span class="material-icons text-neon-blue mr-2">brush</span>
+                  <span>创建了新的VR绘画作品</span>
+                  <span class="text-xs text-gray-400 ml-auto">昨天</span>
+                </div>
+                <div class="px-4 py-3 border-b border-gray-800 flex items-center">
+                  <span class="material-icons text-neon-pink mr-2">favorite</span>
+                  <span>情绪平衡度提升了5%</span>
+                  <span class="text-xs text-gray-400 ml-auto">3天前</span>
+                </div>
+                <div class="px-4 py-3 flex items-center">
+                  <span class="material-icons text-neon-green mr-2">verified</span>
+                  <span>完成了第15次情绪记录</span>
+                  <span class="text-xs text-gray-400 ml-auto">1周前</span>
+                </div>
+              </div>
+              
+              <!-- 设置入口 -->
+              <div class="bg-bg-card rounded-xl overflow-hidden mb-6">
+                <div class="px-4 py-3 border-b border-gray-800 flex items-center">
+                  <span class="material-icons text-gray-400 mr-3">settings</span>
+                  <span>账号设置</span>
+                  <span class="material-icons text-gray-500 ml-auto">chevron_right</span>
+                </div>
+                <div class="px-4 py-3 border-b border-gray-800 flex items-center">
+                  <span class="material-icons text-gray-400 mr-3">privacy_tip</span>
+                  <span>隐私设置</span>
+                  <span class="material-icons text-gray-500 ml-auto">chevron_right</span>
+                </div>
+                <div class="px-4 py-3 flex items-center">
+                  <span class="material-icons text-gray-400 mr-3">help_outline</span>
+                  <span>帮助与反馈</span>
+                  <span class="material-icons text-gray-500 ml-auto">chevron_right</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 底部导航 -->
+          <div class="absolute bottom-0 left-0 right-0 h-16 bg-bg-card border-t border-gray-800 flex items-center justify-around px-6">
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-gray-500">home</span>
+              <span class="text-xs text-gray-500 mt-1">主页</span>
+            </button>
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-gray-500">brush</span>
+              <span class="text-xs text-gray-500 mt-1">绘画</span>
+            </button>
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-gray-500">forum</span>
+              <span class="text-xs text-gray-500 mt-1">社区</span>
+            </button>
+            <button class="flex flex-col items-center">
+              <span class="material-icons text-primary">person</span>
+              <span class="text-xs text-primary mt-1">我的</span>
+            </button>
+          </div>
+          
+          <div class="absolute bottom-20 left-0 right-0 text-center text-xs text-gray-500">
+            个人中心页
+          </div>
+        </div>
+        
+        <!-- 统计分析页 -->
+        <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+          <div class="p-6">
+            <div class="flex items-center mb-6">
+              <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-4">
+                <span class="material-icons">arrow_back</span>
+              </button>
+              <h2 class="text-2xl font-bold">情绪统计分析</h2>
+            </div>
+            
+            <!-- 时间选择器 -->
+            <div class="flex justify-between mb-6">
+              <button class="bg-bg-card rounded-xl py-2 px-4 text-sm">周</button>
+              <button class="bg-primary rounded-xl py-2 px-4 text-sm font-medium">月</button>
+              <button class="bg-bg-card rounded-xl py-2 px-4 text-sm">季</button>
+              <button class="bg-bg-card rounded-xl py-2 px-4 text-sm">年</button>
+              <button class="bg-bg-card rounded-xl py-2 px-4 text-sm">自定义</button>
+            </div>
+            
+            <!-- 情绪波动图 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-6">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold">情绪波动趋势</h3>
+                <span class="text-sm text-gray-400">9月</span>
+              </div>
+              
+              <!-- 简化的图表 -->
+              <div class="h-44 flex items-end space-x-1">
+                <div class="flex-1 flex flex-col items-center">
+                  <div class="w-full h-36 bg-bg-card-hover rounded-t-sm relative">
+                    <div class="w-full h-24 bg-primary bg-opacity-40 absolute bottom-0 rounded-t-sm"></div>
+                  </div>
+                  <span class="text-xs text-gray-400 mt-1">1周</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center">
+                  <div class="w-full h-36 bg-bg-card-hover rounded-t-sm relative">
+                    <div class="w-full h-12 bg-primary bg-opacity-40 absolute bottom-0 rounded-t-sm"></div>
+                  </div>
+                  <span class="text-xs text-gray-400 mt-1">2周</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center">
+                  <div class="w-full h-36 bg-bg-card-hover rounded-t-sm relative">
+                    <div class="w-full h-30 bg-primary bg-opacity-40 absolute bottom-0 rounded-t-sm"></div>
+                  </div>
+                  <span class="text-xs text-gray-400 mt-1">3周</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center">
+                  <div class="w-full h-36 bg-bg-card-hover rounded-t-sm relative">
+                    <div class="w-full h-36 bg-primary rounded-t-sm absolute bottom-0"></div>
+                  </div>
+                  <span class="text-xs text-gray-400 mt-1">4周</span>
+                </div>
+              </div>
+              
+              <div class="flex justify-between text-xs text-gray-400 mt-3">
+                <span>低落</span>
+                <span>平静</span>
+                <span>愉悦</span>
+              </div>
+            </div>
+            
+            <!-- 情绪分布 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-6">
+              <h3 class="font-semibold mb-4">情绪分布</h3>
+              
+              <div class="space-y-3">
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span>愉悦</span>
+                    <span>42%</span>
+                  </div>
+                  <div class="h-2 bg-bg-card-hover rounded-full">
+                    <div class="h-2 bg-neon-green rounded-full" style="width: 42%"></div>
+                  </div>
+                </div>
+                
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span>平静</span>
+                    <span>35%</span>
+                  </div>
+                  <div class="h-2 bg-bg-card-hover rounded-full">
+                    <div class="h-2 bg-neon-blue rounded-full" style="width: 35%"></div>
+                  </div>
+                </div>
+                
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span>低落</span>
+                    <span>15%</span>
+                  </div>
+                  <div class="h-2 bg-bg-card-hover rounded-full">
+                    <div class="h-2 bg-neon-pink rounded-full" style="width: 15%"></div>
+                  </div>
+                </div>
+                
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span>焦虑</span>
+                    <span>8%</span>
+                  </div>
+                  <div class="h-2 bg-bg-card-hover rounded-full">
+                    <div class="h-2 bg-neon-yellow rounded-full" style="width: 8%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 触发因素分析 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-6">
+              <h3 class="font-semibold mb-4">情绪触发因素分析</h3>
+              
+              <div class="flex flex-wrap gap-2">
+                <div class="flex items-center bg-bg-card-hover rounded-lg px-3 py-2">
+                  <div class="w-2 h-2 rounded-full bg-primary mr-2"></div>
+                  <span>工作 (45%)</span>
+                </div>
+                <div class="flex items-center bg-bg-card-hover rounded-lg px-3 py-2">
+                  <div class="w-2 h-2 rounded-full bg-neon-blue mr-2"></div>
+                  <span>人际 (20%)</span>
+                </div>
+                <div class="flex items-center bg-bg-card-hover rounded-lg px-3 py-2">
+                  <div class="w-2 h-2 rounded-full bg-neon-pink mr-2"></div>
+                  <span>健康 (18%)</span>
+                </div>
+                <div class="flex items-center bg-bg-card-hover rounded-lg px-3 py-2">
+                  <div class="w-2 h-2 rounded-full bg-neon-yellow mr-2"></div>
+                  <span>家庭 (12%)</span>
+                </div>
+                <div class="flex items-center bg-bg-card-hover rounded-lg px-3 py-2">
+                  <div class="w-2 h-2 rounded-full bg-neon-green mr-2"></div>
+                  <span>其他 (5%)</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 情绪干预建议 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-6">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold">情绪干预建议</h3>
+                <span class="material-icons text-neon-green">psychology</span>
+              </div>
+              
+              <div class="space-y-4">
+                <div class="bg-bg-card-hover rounded-lg p-3">
+                  <div class="flex items-center mb-2">
+                    <span class="material-icons text-neon-blue mr-2">water_drop</span>
+                    <h4 class="font-medium">平衡工作压力</h4>
+                  </div>
+                  <p class="text-sm text-gray-300">建议在工作日安排固定的休息时间，可以尝试5分钟的呼吸练习</p>
+                </div>
+                
+                <div class="bg-bg-card-hover rounded-lg p-3">
+                  <div class="flex items-center mb-2">
+                    <span class="material-icons text-neon-green mr-2">self_improvement</span>
+                    <h4 class="font-medium">增加VR绘画疗愈频率</h4>
+                  </div>
+                  <p class="text-sm text-gray-300">数据显示VR绘画对你的情绪改善效果明显，建议每周至少3次</p>
+                </div>
+                
+                <div class="bg-bg-card-hover rounded-lg p-3">
+                  <div class="flex items-center mb-2">
+                    <span class="material-icons text-neon-pink mr-2">favorite</span>
+                    <h4 class="font-medium">加强社交支持</h4>
+                  </div>
+                  <p class="text-sm text-gray-300">在社区中分享你的体验，与有类似经历的人建立联系</p>
+                </div>
+              </div>
+            </div>
+            
+            <button class="w-full p-4 bg-primary rounded-full font-semibold text-white">导出详细报告</button>
+          </div>
+          <div class="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500">
+            统计分析页
+          </div>
+        </div>
+        
+        <!-- 绘画作品详情页 -->
+        <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+          <div class="p-6">
+            <div class="flex items-center mb-6">
+              <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-4">
+                <span class="material-icons">arrow_back</span>
+              </button>
+              <h2 class="text-2xl font-bold">作品详情</h2>
+              <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center ml-auto">
+                <span class="material-icons">more_vert</span>
+              </button>
+            </div>
+            
+            <!-- 作品展示 -->
+            <div class="bg-bg-card rounded-xl overflow-hidden mb-6">
+              <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80&w=750" alt="绘画作品" class="w-full h-64 object-cover">
+              
+              <div class="p-4">
+                <div class="flex justify-between items-center mb-3">
+                  <h3 class="font-semibold">《内心平静》</h3>
+                  <span class="text-xs text-gray-400">创作于2天前</span>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">这是我在情绪波动期创作的水彩作品，表达了我对内心平静的追求。蓝色代表着平静，紫色代表着我的思绪。</p>
+                
+                <div class="flex space-x-2 mb-4">
+                  <span class="bg-bg-card-hover rounded-full py-1 px-3 text-xs">水彩风格</span>
+                  <span class="bg-bg-card-hover rounded-full py-1 px-3 text-xs">情绪表达</span>
+                  <span class="bg-bg-card-hover rounded-full py-1 px-3 text-xs">平静</span>
+                </div>
+                
+                <div class="flex justify-between border-t border-gray-800 pt-4">
+                  <button class="flex items-center">
+                    <span class="material-icons text-neon-pink mr-1">favorite</span>
+                    <span>68</span>
+                  </button>
+                  <button class="flex items-center">
+                    <span class="material-icons text-neon-blue mr-1">comment</span>
+                    <span>12</span>
+                  </button>
+                  <button class="flex items-center">
+                    <span class="material-icons text-gray-400 mr-1">bookmark</span>
+                    <span>收藏</span>
+                  </button>
+                  <button class="flex items-center">
+                    <span class="material-icons text-gray-400 mr-1">share</span>
+                    <span>分享</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 情绪分析卡片 -->
+            <div class="bg-bg-card rounded-xl p-5 mb-6">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold">创作时的情绪分析</h3>
+                <div class="w-8 h-8 rounded-full bg-neon-blue bg-opacity-20 flex items-center justify-center">
+                  <span class="material-icons text-neon-blue text-sm">insights</span>
+                </div>
+              </div>
+              
+              <div class="flex mb-4">
+                <div class="flex-1 flex items-center justify-center flex-col">
+                  <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background: conic-gradient(#8C52FF 0% 60%, #00E9FF 60% 85%, #FF2E93 85% 100%)">
+                    <div class="w-10 h-10 rounded-full bg-bg-card"></div>
+                  </div>
+                  <span class="text-xs text-gray-400 mt-2">情绪分布</span>
+                </div>
+                
+                <div class="flex-1 space-y-1">
+                  <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                      <div class="w-2 h-2 rounded-full bg-primary mr-2"></div>
+                      <span class="text-sm">平静</span>
+                    </div>
+                    <span class="text-sm">60%</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                      <div class="w-2 h-2 rounded-full bg-neon-blue mr-2"></div>
+                      <span class="text-sm">专注</span>
+                    </div>
+                    <span class="text-sm">25%</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                      <div class="w-2 h-2 rounded-full bg-neon-pink mr-2"></div>
+                      <span class="text-sm">思考</span>
+                    </div>
+                    <span class="text-sm">15%</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-bg-card-hover rounded-lg p-3">
+                <p class="text-sm text-gray-300">创作过程中情绪波动很小，整体处于稳定的平静状态，对情绪调节效果显著。</p>
+              </div>
+            </div>
+            
+            <!-- 评论区 -->
+            <h3 class="font-semibold mb-4">评论 (12)</h3>
+            
+            <div class="space-y-4 mb-6">
+              <div class="flex">
+                <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                  <span>清</span>
+                </div>
+                <div class="bg-bg-card rounded-xl p-3 flex-1">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-medium">清川</span>
+                    <span class="text-xs text-gray-400">1小时前</span>
+                  </div>
+                  <p class="text-sm text-gray-300">色彩搭配很和谐，能感受到平静的氛围，很有治愈效果！</p>
+                  <div class="flex items-center mt-2">
+                    <button class="flex items-center text-xs text-gray-400">
+                      <span class="material-icons text-xs mr-1">favorite</span>
+                      <span>12</span>
+                    </button>
+                    <button class="flex items-center text-xs text-gray-400 ml-4">
+                      <span class="material-icons text-xs mr-1">reply</span>
+                      <span>回复</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex">
+                <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                  <span>星</span>
+                </div>
+                <div class="bg-bg-card rounded-xl p-3 flex-1">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-medium">星辰</span>
+                    <span class="text-xs text-gray-400">2小时前</span>
+                  </div>
+                  <p class="text-sm text-gray-300">我也正在学习VR绘画，你的作品给了我很多灵感！请问你用的是什么工具？</p>
+                  <div class="flex items-center mt-2">
+                    <button class="flex items-center text-xs text-gray-400">
+                      <span class="material-icons text-xs mr-1">favorite</span>
+                      <span>8</span>
+                    </button>
+                    <button class="flex items-center text-xs text-gray-400 ml-4">
+                      <span class="material-icons text-xs mr-1">reply</span>
+                      <span>回复</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 发表评论 -->
+            <div class="flex">
+              <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                <span>明</span>
+              </div>
+              <div class="flex-1 relative">
+                <input type="text" placeholder="分享你的想法..." class="w-full py-3 px-4 bg-bg-card rounded-full border border-gray-800 focus:border-primary focus:outline-none pr-12">
+                <button class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                  <span class="material-icons text-white text-sm">send</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500">
+            绘画作品详情页
+          </div>
+        </div>
+        
+        <!-- 冥想辅助页 -->
+        <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+          <div class="p-6">
+            <div class="flex items-center mb-6">
+              <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-4">
+                <span class="material-icons">arrow_back</span>
+              </button>
+              <h2 class="text-2xl font-bold">冥想辅助</h2>
+            </div>
+            
+            <!-- 主要内容 -->
+            <div class="mb-6 text-center">
+              <img src="https://images.unsplash.com/photo-1610552050890-fe99536c2615?auto=format&fit=crop&q=80&w=500" alt="冥想场景" class="w-full h-48 object-cover rounded-xl mb-4">
+              
+              <h3 class="text-xl font-bold mb-2">专注呼吸冥想</h3>
+              <p class="text-gray-300 mb-4">10分钟 · 适合情绪稳定</p>
+              
+              <div class="w-64 h-64 rounded-full border-8 border-primary mx-auto mb-8 flex items-center justify-center relative">
+                <div class="w-52 h-52 rounded-full bg-bg-card-hover flex flex-col items-center justify-center">
+                  <span class="material-icons text-primary text-5xl mb-2">air</span>
+                  <span class="text-2xl font-bold">08:24</span>
+                  <span class="text-sm text-gray-400">剩余时间</span>
+                </div>
+                <div class="absolute inset-0 rounded-full border-8 border-primary border-t-transparent" style="transform: rotate(130deg)"></div>
+              </div>
+              
+              <div class="flex justify-center space-x-4 mb-8">
+                <button class="w-12 h-12 rounded-full bg-bg-card-hover flex items-center justify-center">
+                  <span class="material-icons text-gray-400">skip_previous</span>
+                </button>
+                <button class="w-16 h-16 rounded-full bg-primary flex items-center justify-center">
+                  <span class="material-icons text-white text-3xl">pause</span>
+                </button>
+                <button class="w-12 h-12 rounded-full bg-bg-card-hover flex items-center justify-center">
+                  <span class="material-icons text-gray-400">skip_next</span>
+                </button>
+              </div>
+              
+              <div class="bg-bg-card rounded-xl p-4 text-left mb-6">
+                <p class="text-gray-300 text-sm">专注于你的呼吸...吸气...呼气...感受空气流过你的鼻腔，充满你的肺部，然后缓缓呼出...</p>
+              </div>
+              
+              <div class="flex justify-between">
+                <button class="flex items-center bg-bg-card-hover rounded-lg py-2 px-4">
+                  <span class="material-icons text-neon-blue mr-2">speed</span>
+                  <span>0.8x</span>
+                </button>
+                <button class="flex items-center bg-bg-card-hover rounded-lg py-2 px-4">
+                  <span class="material-icons text-neon-blue mr-2">volume_up</span>
+                  <span>音量</span>
+                </button>
+                <button class="flex items-center bg-bg-card-hover rounded-lg py-2 px-4">
+                  <span class="material-icons text-neon-blue mr-2">background_replace</span>
+                  <span>背景音</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500">
+            冥想辅助页
+          </div>
+        </div>
+        
+        <!-- 聊天/支持页 -->
+        <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+          <div class="h-full flex flex-col">
+            <div class="p-6">
+              <div class="flex items-center mb-6">
+                <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-4">
+                  <span class="material-icons">arrow_back</span>
+                </button>
+                <div>
+                  <h2 class="text-xl font-bold">专业辅导</h2>
+                  <div class="flex items-center">
+                    <span class="w-2 h-2 rounded-full bg-neon-green mr-2"></span>
+                    <span class="text-sm text-gray-400">张医生 正在线上</span>
+                  </div>
+                </div>
+                <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center ml-auto">
+                  <span class="material-icons">more_vert</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- 聊天内容区域 -->
+            <div class="flex-1 overflow-y-auto p-6 pt-0">
+              <div class="text-center text-xs text-gray-400 mb-6">今天 16:25</div>
+              
+              <!-- 接收的消息 -->
+              <div class="flex mb-4">
+                <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                  <span>张</span>
+                </div>
+                <div class="max-w-[70%]">
+                  <div class="bg-bg-card rounded-xl rounded-tl-none p-3 mb-1">
+                    <p class="text-gray-300">你好明月，今天感觉如何？我看到你的情绪记录已经连续三天处于稳定状态了，这很棒！</p>
+                  </div>
+                  <span class="text-xs text-gray-400">16:25</span>
+                </div>
+              </div>
+              
+              <!-- 发送的消息 -->
+              <div class="flex justify-end mb-4">
+                <div class="max-w-[70%]">
+                  <div class="bg-primary rounded-xl rounded-tr-none p-3 mb-1">
+                    <p>是的，我最近感觉好多了！VR绘画和冥想练习对我很有帮助。</p>
+                  </div>
+                  <span class="text-xs text-gray-400 block text-right">16:28</span>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center ml-3 flex-shrink-0">
+                  <span>明</span>
+                </div>
+              </div>
+              
+              <!-- 接收的消息 -->
+              <div class="flex mb-4">
+                <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                  <span>张</span>
+                </div>
+                <div class="max-w-[70%]">
+                  <div class="bg-bg-card rounded-xl rounded-tl-none p-3 mb-1">
+                    <p class="text-gray-300">太好了！我们今天的线上沟通主要是想讨论一下你最近的日常规律和睡眠情况。你能分享一下吗？</p>
+                  </div>
+                  <span class="text-xs text-gray-400">16:30</span>
+                </div>
+              </div>
+              
+              <!-- 发送的消息 -->
+              <div class="flex justify-end mb-4">
+                <div class="max-w-[70%]">
+                  <div class="bg-primary rounded-xl rounded-tr-none p-3 mb-1">
+                    <p>我现在每天晚上10点睡觉，早上6点起床，这个规律保持了一周多。不过周末有时候还是会晚睡一些。</p>
+                  </div>
+                  <span class="text-xs text-gray-400 block text-right">16:32</span>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center ml-3 flex-shrink-0">
+                  <span>明</span>
+                </div>
+              </div>
+              
+              <!-- 接收的消息 -->
+              <div class="flex mb-4">
+                <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                  <span>张</span>
+                </div>
+                <div class="max-w-[70%]">
+                  <div class="bg-bg-card rounded-xl rounded-tl-none p-3 mb-1">
+                    <p class="text-gray-300">规律的作息对情绪稳定很有帮助，你做得很好！周末稍微晚睡也是可以的，但尽量不要超过平时的时间太多。</p>
+                  </div>
+                  <span class="text-xs text-gray-400">16:35</span>
+                </div>
+              </div>
+              
+              <div class="flex mb-4">
+                <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                  <span>张</span>
+                </div>
+                <div class="max-w-[70%]">
+                  <div class="bg-bg-card rounded-xl rounded-tl-none p-3 mb-1">
+                    <p class="text-gray-300">你最近有遇到什么情绪波动的触发因素吗？</p>
+                  </div>
+                  <span class="text-xs text-gray-400">16:36</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 输入框区域 -->
+            <div class="p-4 border-t border-gray-800 bg-bg-card">
+              <div class="flex">
+                <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-2">
+                  <span class="material-icons text-gray-400">add</span>
+                </button>
+                <div class="flex-1 relative">
+                  <input type="text" placeholder="输入消息..." class="w-full py-2 px-4 bg-bg-card-hover rounded-full border border-gray-800 focus:border-primary focus:outline-none pr-12">
+                  <button class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                    <span class="material-icons text-white text-sm">send</span>
+                  </button>
+                </div>
+                <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center ml-2">
+                  <span class="material-icons text-gray-400">mic</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="absolute bottom-20 left-0 right-0 text-center text-xs text-gray-500">
+            专业支持聊天页
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- 用户场景与功能分析 -->
+      <div class="max-w-4xl mx-auto mt-16 mb-20 bg-bg-card p-6 rounded-xl text-white">
+        <h2 class="text-2xl font-bold mb-6">用户场景与功能分析</h2>
+        
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-primary">核心用户场景</h3>
+          <ol class="list-decimal pl-6 space-y-4">
+            <li>
+              <p class="font-semibold mb-1">情绪低落时的自我管理</p>
+              <p class="text-gray-300">用户在感到情绪低落时，可以打开APP记录自己的情绪，系统根据MBTI个性分析和历史数据，推荐个性化的干预措施（如VR绘画、冥想）</p>
+            </li>
+            <li>
+              <p class="font-semibold mb-1">预约和进行专业辅导</p>
+              <p class="text-gray-300">用户可以在APP中预约专业医生进行远程辅导，并在预约时间到达时接收提醒，直接在应用内进行视频或文字沟通</p>
+            </li>
+            <li>
+              <p class="font-semibold mb-1">社区支持与情感分享</p>
+              <p class="text-gray-300">用户可以在社区中分享自己的情绪管理经验、VR绘画作品，与同样经历情绪障碍的人建立联系，获得理解和支持</p>
+            </li>
+            <li>
+              <p class="font-semibold mb-1">日常情绪监测与干预</p>
+              <p class="text-gray-300">用户每天记录自己的情绪和触发因素，系统会生成情绪分析报告，并提供针对性建议，帮助用户认识自己的情绪模式</p>
+            </li>
+          </ol>
+        </div>
+        
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-neon-blue">用户需求分析</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-bg-card-hover p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <span class="material-icons text-neon-blue mr-2">psychology</span>
+                <h4 class="font-semibold">自我了解需求</h4>
+              </div>
+              <p class="text-gray-300 text-sm">双向情感障碍患者需要了解自己的情绪模式和触发因素，以便更好地管理症状</p>
+            </div>
+            
+            <div class="bg-bg-card-hover p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <span class="material-icons text-neon-pink mr-2">favorite</span>
+                <h4 class="font-semibold">社交支持需求</h4>
+              </div>
+              <p class="text-gray-300 text-sm">患者需要一个安全、理解的社区环境，获得同伴支持，减少孤独感</p>
+            </div>
+            
+            <div class="bg-bg-card-hover p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <span class="material-icons text-neon-green mr-2">healing</span>
+                <h4 class="font-semibold">干预工具需求</h4>
+              </div>
+              <p class="text-gray-300 text-sm">需要有效的情绪调节工具和方法，帮助稳定情绪波动</p>
+            </div>
+            
+            <div class="bg-bg-card-hover p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <span class="material-icons text-neon-yellow mr-2">medical_services</span>
+                <h4 class="font-semibold">专业支持需求</h4>
+              </div>
+              <p class="text-gray-300 text-sm">需要便捷获取专业心理健康资源和医疗支持</p>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-semibold mb-4 text-neon-pink">设计亮点</h3>
+          <div class="space-y-4">
+            <div class="bg-bg-card-hover p-4 rounded-lg">
+              <h4 class="font-semibold mb-2">暗色主题与柔和色彩</h4>
+              <p class="text-gray-300">采用深色背景减少视觉刺激，搭配柔和的霓虹色调（紫色、蓝色、粉色等）提供舒适的视觉体验，同时通过色彩编码区分不同功能模块</p>
+            </div>
+            
+            <div class="bg-bg-card-hover p-4 rounded-lg">
+              <h4 class="font-semibold mb-2">个性化推荐系统</h4>
+              <p class="text-gray-300">基于MBTI性格分析和用户情绪数据，提供高度个性化的干预策略和内容推荐，增强用户参与度和治疗效果</p>
+                  <div class="w-2 h-2
+
+                  <div class="flex items-center bg-bg-card-hover rounded-lg px-3 py-2">
+                    <div class="w-2 h-2 rounded-full bg-primary mr-2"></div>
+                    <span>工作 (45%)</span>
+                  </div>
+                  <div class="flex items-center bg-bg-card-hover rounded-lg px-3 py-2">
+                    <div class="w-2 h-2 rounded-full bg-neon-blue mr-2"></div>
+                    <span>人际 (20%)</span>
+                  </div>
+                  <div class="flex items-center bg-bg-card-hover rounded-lg px-3 py-2">
+                    <div class="w-2 h-2 rounded-full bg-neon-pink mr-2"></div>
+                    <span>健康 (18%)</span>
+                  </div>
+                  <div class="flex items-center bg-bg-card-hover rounded-lg px-3 py-2">
+                    <div class="w-2 h-2 rounded-full bg-neon-yellow mr-2"></div>
+                    <span>家庭 (12%)</span>
+                  </div>
+                  <div class="flex items-center bg-bg-card-hover rounded-lg px-3 py-2">
+                    <div class="w-2 h-2 rounded-full bg-neon-green mr-2"></div>
+                    <span>其他 (5%)</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 情绪干预建议 -->
+              <div class="bg-bg-card rounded-xl p-5 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="font-semibold">情绪干预建议</h3>
+                  <span class="material-icons text-neon-green">psychology</span>
+                </div>
+                
+                <div class="space-y-4">
+                  <div class="bg-bg-card-hover rounded-lg p-3">
+                    <div class="flex items-center mb-2">
+                      <span class="material-icons text-neon-blue mr-2">water_drop</span>
+                      <h4 class="font-medium">平衡工作压力</h4>
+                    </div>
+                    <p class="text-sm text-gray-300">建议在工作日安排固定的休息时间，可以尝试5分钟的呼吸练习</p>
+                  </div>
+                  
+                  <div class="bg-bg-card-hover rounded-lg p-3">
+                    <div class="flex items-center mb-2">
+                      <span class="material-icons text-neon-green mr-2">self_improvement</span>
+                      <h4 class="font-medium">增加VR绘画疗愈频率</h4>
+                    </div>
+                    <p class="text-sm text-gray-300">数据显示VR绘画对你的情绪改善效果明显，建议每周至少3次</p>
+                  </div>
+                  
+                  <div class="bg-bg-card-hover rounded-lg p-3">
+                    <div class="flex items-center mb-2">
+                      <span class="material-icons text-neon-pink mr-2">favorite</span>
+                      <h4 class="font-medium">加强社交支持</h4>
+                    </div>
+                    <p class="text-sm text-gray-300">在社区中分享你的体验，与有类似经历的人建立联系</p>
+                  </div>
+                </div>
+              </div>
+              
+              <button class="w-full p-4 bg-primary rounded-full font-semibold text-white">导出详细报告</button>
+            </div>
+            <div class="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500">
+              统计分析页
+            </div>
+          </div>
+          
+          <!-- 绘画作品详情页 -->
+          <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+            <div class="p-6">
+              <div class="flex items-center mb-6">
+                <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-4">
+                  <span class="material-icons">arrow_back</span>
+                </button>
+                <h2 class="text-2xl font-bold">作品详情</h2>
+                <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center ml-auto">
+                  <span class="material-icons">more_vert</span>
+                </button>
+              </div>
+              
+              <!-- 作品展示 -->
+              <div class="bg-bg-card rounded-xl overflow-hidden mb-6">
+                <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80&w=750" alt="绘画作品" class="w-full h-64 object-cover">
+                
+                <div class="p-4">
+                  <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-semibold">《内心平静》</h3>
+                    <span class="text-xs text-gray-400">创作于2天前</span>
+                  </div>
+                  
+                  <p class="text-gray-300 text-sm mb-4">这是我在情绪波动期创作的水彩作品，表达了我对内心平静的追求。蓝色代表着平静，紫色代表着我的思绪。</p>
+                  
+                  <div class="flex space-x-2 mb-4">
+                    <span class="bg-bg-card-hover rounded-full py-1 px-3 text-xs">水彩风格</span>
+                    <span class="bg-bg-card-hover rounded-full py-1 px-3 text-xs">情绪表达</span>
+                    <span class="bg-bg-card-hover rounded-full py-1 px-3 text-xs">平静</span>
+                  </div>
+                  
+                  <div class="flex justify-between border-t border-gray-800 pt-4">
+                    <button class="flex items-center">
+                      <span class="material-icons text-neon-pink mr-1">favorite</span>
+                      <span>68</span>
+                    </button>
+                    <button class="flex items-center">
+                      <span class="material-icons text-neon-blue mr-1">comment</span>
+                      <span>12</span>
+                    </button>
+                    <button class="flex items-center">
+                      <span class="material-icons text-gray-400 mr-1">bookmark</span>
+                      <span>收藏</span>
+                    </button>
+                    <button class="flex items-center">
+                      <span class="material-icons text-gray-400 mr-1">share</span>
+                      <span>分享</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 情绪分析卡片 -->
+              <div class="bg-bg-card rounded-xl p-5 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="font-semibold">创作时的情绪分析</h3>
+                  <div class="w-8 h-8 rounded-full bg-neon-blue bg-opacity-20 flex items-center justify-center">
+                    <span class="material-icons text-neon-blue text-sm">insights</span>
+                  </div>
+                </div>
+                
+                <div class="flex mb-4">
+                  <div class="flex-1 flex items-center justify-center flex-col">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background: conic-gradient(#8C52FF 0% 60%, #00E9FF 60% 85%, #FF2E93 85% 100%)">
+                      <div class="w-10 h-10 rounded-full bg-bg-card"></div>
+                    </div>
+                    <span class="text-xs text-gray-400 mt-2">情绪分布</span>
+                  </div>
+                  
+                  <div class="flex-1 space-y-1">
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center">
+                        <div class="w-2 h-2 rounded-full bg-primary mr-2"></div>
+                        <span class="text-sm">平静</span>
+                      </div>
+                      <span class="text-sm">60%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center">
+                        <div class="w-2 h-2 rounded-full bg-neon-blue mr-2"></div>
+                        <span class="text-sm">专注</span>
+                      </div>
+                      <span class="text-sm">25%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center">
+                        <div class="w-2 h-2 rounded-full bg-neon-pink mr-2"></div>
+                        <span class="text-sm">思考</span>
+                      </div>
+                      <span class="text-sm">15%</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="bg-bg-card-hover rounded-lg p-3">
+                  <p class="text-sm text-gray-300">创作过程中情绪波动很小，整体处于稳定的平静状态，对情绪调节效果显著。</p>
+                </div>
+              </div>
+              
+              <!-- 评论区 -->
+              <h3 class="font-semibold mb-4">评论 (12)</h3>
+              
+              <div class="space-y-4 mb-6">
+                <div class="flex">
+                  <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                    <span>清</span>
+                  </div>
+                  <div class="bg-bg-card rounded-xl p-3 flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                      <span class="font-medium">清川</span>
+                      <span class="text-xs text-gray-400">1小时前</span>
+                    </div>
+                    <p class="text-sm text-gray-300">色彩搭配很和谐，能感受到平静的氛围，很有治愈效果！</p>
+                    <div class="flex items-center mt-2">
+                      <button class="flex items-center text-xs text-gray-400">
+                        <span class="material-icons text-xs mr-1">favorite</span>
+                        <span>12</span>
+                      </button>
+                      <button class="flex items-center text-xs text-gray-400 ml-4">
+                        <span class="material-icons text-xs mr-1">reply</span>
+                        <span>回复</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="flex">
+                  <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                    <span>星</span>
+                  </div>
+                  <div class="bg-bg-card rounded-xl p-3 flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                      <span class="font-medium">星辰</span>
+                      <span class="text-xs text-gray-400">2小时前</span>
+                    </div>
+                    <p class="text-sm text-gray-300">我也正在学习VR绘画，你的作品给了我很多灵感！请问你用的是什么工具？</p>
+                    <div class="flex items-center mt-2">
+                      <button class="flex items-center text-xs text-gray-400">
+                        <span class="material-icons text-xs mr-1">favorite</span>
+                        <span>8</span>
+                      </button>
+                      <button class="flex items-center text-xs text-gray-400 ml-4">
+                        <span class="material-icons text-xs mr-1">reply</span>
+                        <span>回复</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 发表评论 -->
+              <div class="flex">
+                <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                  <span>明</span>
+                </div>
+                <div class="flex-1 relative">
+                  <input type="text" placeholder="分享你的想法..." class="w-full py-3 px-4 bg-bg-card rounded-full border border-gray-800 focus:border-primary focus:outline-none pr-12">
+                  <button class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                    <span class="material-icons text-white text-sm">send</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500">
+              绘画作品详情页
+            </div>
+          </div>
+          
+          <!-- 冥想辅助页 -->
+          <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+            <div class="p-6">
+              <div class="flex items-center mb-6">
+                <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-4">
+                  <span class="material-icons">arrow_back</span>
+                </button>
+                <h2 class="text-2xl font-bold">冥想辅助</h2>
+              </div>
+              
+              <!-- 主要内容 -->
+              <div class="mb-6 text-center">
+                <img src="https://images.unsplash.com/photo-1610552050890-fe99536c2615?auto=format&fit=crop&q=80&w=500" alt="冥想场景" class="w-full h-48 object-cover rounded-xl mb-4">
+                
+                <h3 class="text-xl font-bold mb-2">专注呼吸冥想</h3>
+                <p class="text-gray-300 mb-4">10分钟 · 适合情绪稳定</p>
+                
+                <div class="w-64 h-64 rounded-full border-8 border-primary mx-auto mb-8 flex items-center justify-center relative">
+                  <div class="w-52 h-52 rounded-full bg-bg-card-hover flex flex-col items-center justify-center">
+                    <span class="material-icons text-primary text-5xl mb-2">air</span>
+                    <span class="text-2xl font-bold">08:24</span>
+                    <span class="text-sm text-gray-400">剩余时间</span>
+                  </div>
+                  <div class="absolute inset-0 rounded-full border-8 border-primary border-t-transparent" style="transform: rotate(130deg)"></div>
+                </div>
+                
+                <div class="flex justify-center space-x-4 mb-8">
+                  <button class="w-12 h-12 rounded-full bg-bg-card-hover flex items-center justify-center">
+                    <span class="material-icons text-gray-400">skip_previous</span>
+                  </button>
+                  <button class="w-16 h-16 rounded-full bg-primary flex items-center justify-center">
+                    <span class="material-icons text-white text-3xl">pause</span>
+                  </button>
+                  <button class="w-12 h-12 rounded-full bg-bg-card-hover flex items-center justify-center">
+                    <span class="material-icons text-gray-400">skip_next</span>
+                  </button>
+                </div>
+                
+                <div class="bg-bg-card rounded-xl p-4 text-left mb-6">
+                  <p class="text-gray-300 text-sm">专注于你的呼吸...吸气...呼气...感受空气流过你的鼻腔，充满你的肺部，然后缓缓呼出...</p>
+                </div>
+                
+                <div class="flex justify-between">
+                  <button class="flex items-center bg-bg-card-hover rounded-lg py-2 px-4">
+                    <span class="material-icons text-neon-blue mr-2">speed</span>
+                    <span>0.8x</span>
+                  </button>
+                  <button class="flex items-center bg-bg-card-hover rounded-lg py-2 px-4">
+                    <span class="material-icons text-neon-blue mr-2">volume_up</span>
+                    <span>音量</span>
+                  </button>
+                  <button class="flex items-center bg-bg-card-hover rounded-lg py-2 px-4">
+                    <span class="material-icons text-neon-blue mr-2">background_replace</span>
+                    <span>背景音</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500">
+              冥想辅助页
+            </div>
+          </div>
+          
+          <!-- 聊天/支持页 -->
+          <div class="screen dark custom-shadow rounded-3xl border border-gray-800">
+            <div class="h-full flex flex-col">
+              <div class="p-6">
+                <div class="flex items-center mb-6">
+                  <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-4">
+                    <span class="material-icons">arrow_back</span>
+                  </button>
+                  <div>
+                    <h2 class="text-xl font-bold">专业辅导</h2>
+                    <div class="flex items-center">
+                      <span class="w-2 h-2 rounded-full bg-neon-green mr-2"></span>
+                      <span class="text-sm text-gray-400">张医生 正在线上</span>
+                    </div>
+                  </div>
+                  <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center ml-auto">
+                    <span class="material-icons">more_vert</span>
+                  </button>
+                </div>
+              </div>
+              
+              <!-- 聊天内容区域 -->
+              <div class="flex-1 overflow-y-auto p-6 pt-0">
+                <div class="text-center text-xs text-gray-400 mb-6">今天 16:25</div>
+                
+                <!-- 接收的消息 -->
+                <div class="flex mb-4">
+                  <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                    <span>张</span>
+                  </div>
+                  <div class="max-w-[70%]">
+                    <div class="bg-bg-card rounded-xl rounded-tl-none p-3 mb-1">
+                      <p class="text-gray-300">你好明月，今天感觉如何？我看到你的情绪记录已经连续三天处于稳定状态了，这很棒！</p>
+                    </div>
+                    <span class="text-xs text-gray-400">16:25</span>
+                  </div>
+                </div>
+                
+                <!-- 发送的消息 -->
+                <div class="flex justify-end mb-4">
+                  <div class="max-w-[70%]">
+                    <div class="bg-primary rounded-xl rounded-tr-none p-3 mb-1">
+                      <p>是的，我最近感觉好多了！VR绘画和冥想练习对我很有帮助。</p>
+                    </div>
+                    <span class="text-xs text-gray-400 block text-right">16:28</span>
+                  </div>
+                  <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center ml-3 flex-shrink-0">
+                    <span>明</span>
+                  </div>
+                </div>
+                
+                <!-- 接收的消息 -->
+                <div class="flex mb-4">
+                  <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                    <span>张</span>
+                  </div>
+                  <div class="max-w-[70%]">
+                    <div class="bg-bg-card rounded-xl rounded-tl-none p-3 mb-1">
+                      <p class="text-gray-300">太好了！我们今天的线上沟通主要是想讨论一下你最近的日常规律和睡眠情况。你能分享一下吗？</p>
+                    </div>
+                    <span class="text-xs text-gray-400">16:30</span>
+                  </div>
+                </div>
+                
+                <!-- 发送的消息 -->
+                <div class="flex justify-end mb-4">
+                  <div class="max-w-[70%]">
+                    <div class="bg-primary rounded-xl rounded-tr-none p-3 mb-1">
+                      <p>我现在每天晚上10点睡觉，早上6点起床，这个规律保持了一周多。不过周末有时候还是会晚睡一些。</p>
+                    </div>
+                    <span class="text-xs text-gray-400 block text-right">16:32</span>
+                  </div>
+                  <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center ml-3 flex-shrink-0">
+                    <span>明</span>
+                  </div>
+                </div>
+                
+                <!-- 接收的消息 -->
+                <div class="flex mb-4">
+                  <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                    <span>张</span>
+                  </div>
+                  <div class="max-w-[70%]">
+                    <div class="bg-bg-card rounded-xl rounded-tl-none p-3 mb-1">
+                      <p class="text-gray-300">规律的作息对情绪稳定很有帮助，你做得很好！周末稍微晚睡也是可以的，但尽量不要超过平时的时间太多。</p>
+                    </div>
+                    <span class="text-xs text-gray-400">16:35</span>
+                  </div>
+                </div>
+                
+                <div class="flex mb-4">
+                  <div class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-3 flex-shrink-0">
+                    <span>张</span>
+                  </div>
+                  <div class="max-w-[70%]">
+                    <div class="bg-bg-card rounded-xl rounded-tl-none p-3 mb-1">
+                      <p class="text-gray-300">你最近有遇到什么情绪波动的触发因素吗？</p>
+                    </div>
+                    <span class="text-xs text-gray-400">16:36</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 输入框区域 -->
+              <div class="p-4 border-t border-gray-800 bg-bg-card">
+                <div class="flex">
+                  <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center mr-2">
+                    <span class="material-icons text-gray-400">add</span>
+                  </button>
+                  <div class="flex-1 relative">
+                    <input type="text" placeholder="输入消息..." class="w-full py-2 px-4 bg-bg-card-hover rounded-full border border-gray-800 focus:border-primary focus:outline-none pr-12">
+                    <button class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                      <span class="material-icons text-white text-sm">send</span>
+                    </button>
+                  </div>
+                  <button class="w-10 h-10 rounded-full bg-bg-card-hover flex items-center justify-center ml-2">
+                    <span class="material-icons text-gray-400">mic</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="absolute bottom-20 left-0 right-0 text-center text-xs text-gray-500">
+              专业支持聊天页
+            </div>
+          </div>
+          
+        </div>
+        
+        <!-- 用户场景与功能分析 -->
+        <div class="max-w-4xl mx-auto mt-16 mb-20 bg-bg-card p-6 rounded-xl text-white">
+          <h2 class="text-2xl font-bold mb-6">用户场景与功能分析</h2>
+          
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4 text-primary">核心用户场景</h3>
+            <ol class="list-decimal pl-6 space-y-4">
+              <li>
+                <p class="font-semibold mb-1">情绪低落时的自我管理</p>
+                <p class="text-gray-300">用户在感到情绪低落时，可以打开APP记录自己的情绪，系统根据MBTI个性分析和历史数据，推荐个性化的干预措施（如VR绘画、冥想）</p>
+              </li>
+              <li>
+                <p class="font-semibold mb-1">预约和进行专业辅导</p>
+                <p class="text-gray-300">用户可以在APP中预约专业医生进行远程辅导，并在预约时间到达时接收提醒，直接在应用内进行视频或文字沟通</p>
+              </li>
+              <li>
+                <p class="font-semibold mb-1">社区支持与情感分享</p>
+                <p class="text-gray-300">用户可以在社区中分享自己的情绪管理经验、VR绘画作品，与同样经历情绪障碍的人建立联系，获得理解和支持</p>
+              </li>
+              <li>
+                <p class="font-semibold mb-1">日常情绪监测与干预</p>
+                <p class="text-gray-300">用户每天记录自己的情绪和触发因素，系统会生成情绪分析报告，并提供针对性建议，帮助用户认识自己的情绪模式</p>
+              </li>
+            </ol>
+          </div>
+          
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4 text-neon-blue">用户需求分析</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <div class="flex items-center mb-2">
+                  <span class="material-icons text-neon-blue mr-2">psychology</span>
+                  <h4 class="font-semibold">自我了解需求</h4>
+                </div>
+                <p class="text-gray-300 text-sm">双向情感障碍患者需要了解自己的情绪模式和触发因素，以便更好地管理症状</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <div class="flex items-center mb-2">
+                  <span class="material-icons text-neon-pink mr-2">favorite</span>
+                  <h4 class="font-semibold">社交支持需求</h4>
+                </div>
+                <p class="text-gray-300 text-sm">患者需要一个安全、理解的社区环境，获得同伴支持，减少孤独感</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <div class="flex items-center mb-2">
+                  <span class="material-icons text-neon-green mr-2">healing</span>
+                  <h4 class="font-semibold">干预工具需求</h4>
+                </div>
+                <p class="text-gray-300 text-sm">需要有效的情绪调节工具和方法，帮助稳定情绪波动</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <div class="flex items-center mb-2">
+                  <span class="material-icons text-neon-yellow mr-2">medical_services</span>
+                  <h4 class="font-semibold">专业支持需求</h4>
+                </div>
+                <p class="text-gray-300 text-sm">需要便捷获取专业心理健康资源和医疗支持</p>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold mb-4 text-neon-pink">设计亮点</h3>
+            <div class="space-y-4">
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">暗色主题与柔和色彩</h4>
+                <p class="text-gray-300">采用深色背景减少视觉刺激，搭配柔和的霓虹色调（紫色、蓝色、粉色等）提供舒适的视觉体验，同时通过色彩编码区分不同功能模块</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">个性化推荐系统</h4>
+                <p class="text-gray-300">基于MBTI性格分析和用户情绪数据，提供高度个性化的干预策略和内容推荐，增强用户参与度和治疗效果</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">沉浸式VR绘画体验</h4>
+                <p class="text-gray-300">创新性结合VR技术和艺术疗法，为用户提供沉浸式的情绪表达渠道，同时通过AI分析绘画过程和结果，提供情绪反馈</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">安全的社区设计</h4>
+                <p class="text-gray-300">社区内容经过审核和分类，提供情绪标签和内容警告，确保用户可以在舒适区内交流；同时支持匿名分享，降低社交焦虑</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">无缝医疗连接</h4>
+                <p class="text-gray-300">与专业医疗资源无缝对接，支持在线预约、远程咨询和数据分享，方便医生掌握患者情况并提供精准干预</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 技术实现与架构 -->
+        <div class="max-w-4xl mx-auto mt-16 mb-20 bg-bg-card p-6 rounded-xl text-white">
+          <h2 class="text-2xl font-bold mb-6">技术实现与架构</h2>
+          
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4 text-neon-blue">前端技术栈</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">React Native</h4>
+                <p class="text-gray-300 text-sm">用于构建跨平台移动应用，确保iOS和Android用户体验一致性</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">WebGL & Three.js</h4>
+                <p class="text-gray-300 text-sm">为VR绘画功能提供3D渲染和交互支持</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">TailwindCSS</h4>
+                <p class="text-gray-300 text-sm">用于构建一致、可扩展的用户界面</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4 text-neon-green">后端技术栈</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">Node.js & Express</h4>
+                <p class="text-gray-300 text-sm">构建高性能API服务和实时通信功能</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">MongoDB</h4>
+                <p class="text-gray-300 text-sm">存储用户数据、情绪记录和社区内容</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">Redis</h4>
+                <p class="text-gray-300 text-sm">缓存和实时数据处理</p>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold mb-4 text-neon-pink">AI和数据分析</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">个性化推荐系统</h4>
+                <p class="text-gray-300 text-sm">基于协同过滤和内容过滤的混合推荐算法，根据用户情绪数据和反馈不断优化推荐内容</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">情绪分析引擎</h4>
+                <p class="text-gray-300 text-sm">基于NLP和情感分析技术，分析用户文本输入和互动行为，识别情绪状态</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">VR绘画分析</h4>
+                <p class="text-gray-300 text-sm">结合计算机视觉和情感计算，分析用户绘画的线条、色彩和构图，推断情绪状态</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">预测模型</h4>
+                <p class="text-gray-300 text-sm">通过机器学习建立情绪波动预测模型，帮助用户提前干预可能的情绪变化</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 开发与部署计划 -->
+        <div class="max-w-4xl mx-auto mt-16 mb-20 bg-bg-card p-6 rounded-xl text-white">
+          <h2 class="text-2xl font-bold mb-6">开发与部署计划</h2>
+          
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4 text-primary">开发路线图</h3>
+            <div class="relative">
+              <!-- 时间轴 -->
+              <div class="absolute left-16 top-8 bottom-0 w-1 bg-primary"></div>
+              
+              <!-- 阶段1 -->
+              <div class="flex mb-8 relative">
+                <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold relative z-10 mr-8">1</div>
+                <div class="bg-bg-card-hover p-4 rounded-lg flex-1">
+                  <h4 class="font-semibold text-lg mb-2">核心功能开发 (3个月)</h4>
+                  <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                    <li>用户认证与个人资料模块</li>
+                    <li>情绪记录与分析基础功能</li>
+                    <li>简易版VR绘画功能</li>
+                    <li>基础社区功能</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- 阶段2 -->
+              <div class="flex mb-8 relative">
+                <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold relative z-10 mr-8">2</div>
+                <div class="bg-bg-card-hover p-4 rounded-lg flex-1">
+                  <h4 class="font-semibold text-lg mb-2">AI与个性化功能 (2个月)</h4>
+                  <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                    <li>MBTI测试与个性分析系统</li>
+                    <li>情绪预测算法</li>
+                    <li>个性化推荐系统</li>
+                    <li>VR绘画情绪分析</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- 阶段3 -->
+              <div class="flex mb-8 relative">
+                <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold relative z-10 mr-8">3</div>
+                <div class="bg-bg-card-hover p-4 rounded-lg flex-1">
+                  <h4 class="font-semibold text-lg mb-2">医疗连接与扩展功能 (2个月)</h4>
+                  <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                    <li>专业医疗资源对接</li>
+                    <li>远程咨询功能</li>
+                    <li>冥想辅助功能</li>
+                    <li>数据安全与隐私保护增强</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- 阶段4 -->
+              <div class="flex relative">
+                <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold relative z-10 mr-8">4</div>
+                <div class="bg-bg-card-hover p-4 rounded-lg flex-1">
+                  <h4 class="font-semibold text-lg mb-2">测试与优化 (3个月)</h4>
+                  <ul class="list-disc pl-6 space-y-1 text-gray-300">
+                    <li>封闭beta测试</li>
+                    <li>用户反馈收集与功能优化</li>
+                    <li>性能优化与Bug修复</li>
+                    <li>公开beta版本发布</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold mb-4 text-neon-blue">部署与扩展策略</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">云基础设施</h4>
+                <p class="text-gray-300">采用AWS云服务，通过容器化部署确保系统弹性扩展和高可用性</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">数据安全</h4>
+                <p class="text-gray-300">符合HIPAA等医疗数据安全标准，端到端加密，严格的数据访问控制</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">国际化策略</h4>
+                <p class="text-gray-300">多语言支持，符合不同地区监管要求，文化适应性调整</p>
+              </div>
+              
+              <div class="bg-bg-card-hover p-4 rounded-lg">
+                <h4 class="font-semibold mb-2">合作扩展</h4>
+                <p class="text-gray-300">开放API接口，支持与现有医疗系统、健康应用集成，建立生态系统</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 总结 -->
+        <div class="max-w-4xl mx-auto mt-16 mb-20 bg-gradient-to-r from-primary to-neon-blue p-8 rounded-xl text-white">
+          <h2 class="text-3xl font-bold mb-6 text-center">产品总结</h2>
+          
+          <p class="mb-6 text-lg">MoodBalance是一款专为双向情感障碍患者设计的综合性疗愈应用，通过创新的VR绘画、个性化推荐、专业医疗连接和社区支持功能，帮助用户更好地理解和管理情绪波动。</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white bg-opacity-20 p-4 rounded-lg backdrop-blur-sm">
+              <div class="text-center mb-2">
+                <span class="material-icons text-4xl">psychology</span>
+              </div>
+              <h3 class="font-bold text-center mb-2">以人为本</h3>
+              <p class="text-sm text-center">深入理解双向情感障碍患者需求，提供个性化解决方案</p>
+            </div>
+            
+            <div class="bg-white bg-opacity-20 p-4 rounded-lg backdrop-blur-sm">
+              <div class="text-center mb-2">
+                <span class="material-icons text-4xl">tips_and_updates</span>
+              </div>
+              <h3 class="font-bold text-center mb-2">创新疗法</h3>
+              <p class="text-sm text-center">结合VR技术与艺术疗法，创造沉浸式情绪表达体验</p>
+            </div>
+            
+            <div class="bg-white bg-opacity-20 p-4 rounded-lg backdrop-blur-sm">
+              <div class="text-center mb-2">
+                <span class="material-icons text-4xl">diversity_3</span>
+              </div>
+              <h3 class="font-bold text-center mb-2">社区支持</h3>
+              <p class="text-sm text-center">构建安全、温暖的用户社区，减少孤独感，增强归属感</p>
+            </div>
+          </div>
+          
+          <p class="text-center text-lg font-medium">通过科技与人文关怀的结合，MoodBalance致力于成为情绪健康管理的领先应用，帮助用户实现情绪平衡、心灵成长。</p>
+        </div>
+      </div>
+    </body>
+    </html>
+              
